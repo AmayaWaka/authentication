@@ -36,10 +36,33 @@ app.post("/register", function(req, res){
     password: req.body.password
 
   });
+//Saving into db
+  newName.save(function(err){
+    if(!err){
+      res.send("Successfuly added");
+    }else{
+      res.send(err)
+    }
+  });
 
 
 });
+//Geting data from the post routes
 
+app.post("/login", function(req, res){
+  users.findOne({name: req.body.username}, function(err, foundUser){
+    if(foundUser){
+      if(foundUser.password=== req.body.password){
+        res.render("secrets");
+      }else {
+        res.send("Wrong Password");
+      }
+    }else{
+      res.send(err);
+    }
+  });
+
+});
 
 
 
