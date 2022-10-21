@@ -20,7 +20,7 @@ app.use(session({
   saveUninitialized: false
 }));
 //passport
-app.use(passport.initialized());
+app.use(passport.initialize());
 //Tells passport to use session
 app.use(passport.session());
 
@@ -28,14 +28,20 @@ app.use(passport.session());
 //Created db using connection string
 mongoose.connect("mongodb://localhost:27017/userDB");
 //Initialized db constants
-const userSchema = {
+const userSchema = new mongoose.Schema({
   email: String,
   password: String
-}
-const Users = mongoose.model("user", userSchema);
+});
 
+//Adding passportLocalMongoose plugin
+userSchema.plugin(passportLocalMongoose);
 
+const User = mongoose.model("user", userSchema);
 
+passport.use(User.createStrategy());
+//serializing and deserializing user
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 
 app.get("/", function(req, res){
