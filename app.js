@@ -19,6 +19,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+//passport
+app.use(passport.initialized());
+
 
 //Created db using connection string
 mongoose.connect("mongodb://localhost:27017/userDB");
