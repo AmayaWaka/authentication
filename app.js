@@ -4,10 +4,17 @@ const bodyParser = require("body-parser")
 const app = express();
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const session  = require('express-session');
+const passport = require('passport');
+const passportLocalMongoose = require('passport-local-mongoose');
+
+
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
+//Using sessions
+
 //Created db using connection string
 mongoose.connect("mongodb://localhost:27017/userDB");
 //Initialized db constants
@@ -31,43 +38,14 @@ app.get("/register", function(req, res){
   res.render("register");
 });
 app.post("/register", function(req, res){
-  const newName = new Users({
-    email: req.body.email,
-    password: req.body.password
-
-  });
-//Saving into db
-  newName.save(function(err){
-    if(!err){
-      res.send("Successfuly added");
-    }else{
-      res.send(err)
-    }
-  });
-
 
 });
 //Geting data from the post routes
 
 app.post("/login", function(req, res){
-  users.findOne({name: req.body.username}, function(err, foundUser){
-    if(foundUser){
-      if(foundUser.password=== req.body.password){
-        res.render("secrets");
-      }else {
-        res.send("Wrong Password");
-      }
-    }else{
-      res.send(err);
-    }
-  });
+
 
 });
-
-
-
-
-
 
 app.listen(3000, function(){
   console.log("Server started");
