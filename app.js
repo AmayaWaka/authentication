@@ -21,6 +21,8 @@ app.use(session({
 }));
 //passport
 app.use(passport.initialized());
+//Tells passport to use session
+app.use(passport.session());
 
 
 //Created db using connection string
